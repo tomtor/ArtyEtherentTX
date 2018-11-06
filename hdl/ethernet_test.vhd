@@ -79,9 +79,46 @@ architecture Behavioral of ethernet_test is
            data_enable_out : out STD_LOGIC                     := '0');
     end component;
 
-    signal with_seq            : STD_LOGIC_VECTOR (3 downto 0) := (others => '0');
-    signal with_seq_user_data  : std_logic                     := '0';
-    signal with_seq_valid      : std_logic                     := '0';
+	--------------------------------------
+    -- To receive the raw data from the PHY
+    -- (runs in the eth_rxck clock domain)
+    --------------------------------------
+    component receive_raw_data is
+    Port ( eth_rx_clk      : in  STD_LOGIC;
+           eth_rx_dv       : in  STD_LOGIC;
+           eth_rx_err      : in  STD_LOGIC;
+           eth_rx_d        : in  STD_LOGIC_VECTOR (3 downto 0);
+           rx_data_enable  : out STD_LOGIC;
+           rx_data         : out STD_LOGIC_VECTOR (7 downto 0);
+           rx_data_present : out STD_LOGIC;
+           rx_data_error   : out STD_LOGIC);
+    end component;
+    signal rx_data_enable  : STD_LOGIC;
+    signal rx_data         : STD_LOGIC_VECTOR (7 downto 0);
+    signal rx_data_present : STD_LOGIC;
+    signal rx_data_error   : STD_LOGIC;
+
+    -------------------------------------------------------
+    -- A FIFO to pass the data into the 125MHz clock domain                    100MHz
+    -------------------------------------------------------
+--    component fifo_rxclk_to_clk125MHz is
+--    Port ( rx_clk          : in  STD_LOGIC;
+--           rx_write        : in  STD_LOGIC                     := '1';           
+--           rx_data         : in  STD_LOGIC_VECTOR (7 downto 0) := (others => '0');
+--           rx_data_present : in  STD_LOGIC                     := '0';
+--           rx_data_error   : in  STD_LOGIC                     := '0';
+--           
+--           clk125Mhz       : in  STD_LOGIC;
+--           empty           : out STD_LOGIC;           
+--           read            : in  STD_LOGIC;           
+--           data            : out STD_LOGIC_VECTOR (7 downto 0);
+--           data_present    : out STD_LOGIC;
+--           data_error      : out STD_LOGIC);
+--    end component;
+--        
+--    signal with_seq            : STD_LOGIC_VECTOR (3 downto 0) := (others => '0');
+--    signal with_seq_user_data  : std_logic                     := '0';
+--    signal with_seq_valid      : std_logic                     := '0';
 
     component add_crc32 is
         Port ( clk             : in  STD_LOGIC;
