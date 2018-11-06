@@ -157,11 +157,11 @@ begin
    ----------------------------------------------------
 data: nibble_data generic map (
       -- Details for the ARTY's IP settings 
-      eth_src_mac => x"DEADBEEF0123", -- A completely 'random' MAC :)
-      ip_src_addr => x"0A0A0A0A",     -- 10.10.10.10
+      eth_src_mac => x"00183e02e929", -- A completely 'random' MAC :)
+      ip_src_addr => x"c0a800a9",     -- 192.168.0.169
       -- details of the destination (broadcast)
-      eth_dst_mac => x"A0B3CC4CF9EF", -- My laptop's MAC address
-      ip_dst_addr => x"0A0A0A01"      -- 10.10.10.1
+      eth_dst_mac => x"309c23618084", -- Swan
+      ip_dst_addr => x"c0a80003"      -- 192.168.0.3
   ) port map (
       clk        => eth_tx_clk,
       start      => start_sending,
