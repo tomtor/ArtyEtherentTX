@@ -2,7 +2,7 @@ import socket
 import select
 import time
 
-datalen = 1024 + 1
+datalen = 1024 + 4
 udp_ip = "192.168.0.169"
 udp_port = 7777
 message = bytearray(datalen)
@@ -31,10 +31,9 @@ while True:
   except:
     pass
   sock.sendto(message, (udp_ip, udp_port))
-  ready = select.select([sock], [], [], 1)
+  ready = select.select([sock], [], [], 0.01)
   
   if ready[0]:
-    
     data, addr = sock.recvfrom(datalen)
     if data != message:
       print(f"? len:{len(data)} message[0]:{message[0]} data[0]:{data[0]}")
